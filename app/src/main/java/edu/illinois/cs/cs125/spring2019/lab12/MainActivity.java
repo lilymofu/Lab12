@@ -3,6 +3,10 @@ package edu.illinois.cs.cs125.spring2019.lab12;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -10,6 +14,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +29,15 @@ public final class MainActivity extends AppCompatActivity {
 
     /** Request queue for our API requests. */
     private static RequestQueue requestQueue;
-
+    /** Button handler.
+     * @param v somethingsomething
+     */
+    public void buttonOnClick(final View v) {
+        Button button = (Button) v;
+        EditText text = (EditText) findViewById(R.id.IPaddress);
+        ((Button) v).setText("clicked");
+        startAPICall(text.getText().toString());
+    }
     /**
      * Run when this activity comes to the foreground.
      *
@@ -88,6 +102,9 @@ public final class MainActivity extends AppCompatActivity {
             Log.d(TAG, response.toString(2));
             // Example of how to pull a field off the returned JSON object
             Log.i(TAG, response.get("hostname").toString());
+            TextView text = (TextView) findViewById(R.id.output);
+            String output = response.get("hostname").toString();
+            text.setText(output);
         } catch (JSONException ignored) { }
     }
 }
